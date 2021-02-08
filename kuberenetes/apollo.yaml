@@ -19,6 +19,24 @@ spec:
   type: LoadBalancer
 
 ---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-mahesh-flask-service
+  namespace: mahesh-flask-ns
+  annotations:
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: www.webapp.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: mahesh-flask-service
+          servicePort: 80
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
