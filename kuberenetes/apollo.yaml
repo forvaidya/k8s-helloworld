@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mahesh-flask-ns
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mahesh-flask-service
+  namespace: mahesh-flask-ns
+spec:
+  selector:
+    app: mahesh-flask
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mahesh-flask
+  namespace: mahesh-flask-ns
+spec:
+  selector:
+    matchLabels:
+      app: mahesh-flask
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: mahesh-flask
+    spec:
+      containers:
+      - name: mahesh-flask
+        image: mahesh-flask:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
